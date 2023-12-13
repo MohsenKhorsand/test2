@@ -19,6 +19,27 @@ dimensionedScalar nu
     physicalProperties.lookup("nu")
 );
 
+dimensionedScalar D0
+(
+    "D0",
+    dimViscosity,
+    physicalProperties.lookup("D0")
+);
+
+dimensionedScalar a0
+(
+    "a0",
+    dimViscosity / dimTemperature,
+    physicalProperties.lookup("a0")
+);
+
+dimensionedScalar T0
+(
+    "T0",
+    dimTemperature,
+    physicalProperties.lookup("T0")
+);
+
 Info<< "Reading field p\n" << endl;
 volScalarField p
 (
@@ -32,6 +53,35 @@ volScalarField p
     ),
     mesh
 );
+
+Info<< "Reading field T\n" << endl;
+volScalarField T
+(
+    IOobject
+    (
+        "T",
+        runTime.timeName(),
+        mesh,
+        IOobject::MUST_READ,
+        IOobject::AUTO_WRITE
+    ),
+    mesh
+);
+
+Info<< "calc field D\n" << endl;
+volScalarField D
+(
+    IOobject
+    (
+        "D",
+        runTime.timeName(),
+        mesh,
+        IOobject::NO_READ,
+        IOobject::AUTO_WRITE
+    ),
+    D0 + a0 * (T - T0)
+);
+
 
 
 Info<< "Reading field U\n" << endl;

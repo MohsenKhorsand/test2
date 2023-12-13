@@ -64,6 +64,15 @@ int main(int argc, char *argv[])
           - fvm::laplacian(nu, U)
         );
 
+        fvScalarMatrix TEqn
+        (
+            fvm::ddt(T)
+          + fvm::div(phi, T)
+          - fvm::laplacian(D, T)
+        );
+
+        TEqn.solve();
+
         if (piso.momentumPredictor())
         {
             solve(UEqn == -fvc::grad(p));
@@ -111,6 +120,8 @@ int main(int argc, char *argv[])
             U = HbyA - rAU*fvc::grad(p);
             U.correctBoundaryConditions();
         }
+
+        D = D0 + a0 * (T - T0);
 
         runTime.write();
 
