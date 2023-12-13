@@ -1,0 +1,6 @@
+{
+    "files.associations": {
+        "icoFoam.C": "cpp",
+        "icoHeatFoam.C": "cpp"
+    }
+}
